@@ -1,1 +1,1 @@
-This is a bash script
+This is are some bash scripts
