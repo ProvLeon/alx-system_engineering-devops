@@ -6,8 +6,6 @@
 #You must use the while loop (for and until are forbidden)
 #Note that in this example, we only display the first 70 lines using the head command
 
-#!/bin/bash
-
 hour=0
 
 while [ $hour -lt 12 ]
