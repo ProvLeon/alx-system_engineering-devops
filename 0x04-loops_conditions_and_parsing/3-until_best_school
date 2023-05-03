@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#displays "Best School" until a specific confition if met
+
+i=0
+until [ $i -ge 10 ]
+do
+	echo "Best School"
+	i=$((i+1))
+done
