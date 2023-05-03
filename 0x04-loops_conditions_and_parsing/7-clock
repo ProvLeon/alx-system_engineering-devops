@@ -14,7 +14,7 @@ do
 
 	for minute in {1..59}
 	do
-		echo $minute
+		echo "$minute"
 	done
 
 	((hour++))
@@ -23,5 +23,5 @@ done
 echo "Hour: $hour"
 for minute in {1..59}
 do
-	echo $minute
+	echo "$minute"
 done
