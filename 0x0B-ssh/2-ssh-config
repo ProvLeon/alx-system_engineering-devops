@@ -2,8 +2,7 @@
 # The SSH client will only use Key Authentication
 # Password based Authentication is disabled
 
-Host *
-    HostName 98.98.98.98
+Host 98.98.98.98
     SeverAliveInterval 120
     IdentityFile ~/.ssh/school
     PasswordAuthentication no
