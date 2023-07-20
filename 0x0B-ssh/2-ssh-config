@@ -3,7 +3,7 @@
 # Password based Authentication is disabled
 
 Host *
-    HostName 100.25.161.161
+    HostName 98.98.98.98
     SeverAliveInterval 120
     IdentityFile ~/.ssh/school
     PasswordAuthentication no
