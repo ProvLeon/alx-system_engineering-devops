@@ -1,16 +1,15 @@
 #!/usr/bin/env ruby
 
-if ARGV.length != 1
-  puts "Usage: #{$PROGRAM_NAME} <string>"
-  exit 1
+def match_school(string)
+  regex = /School/
+  match_data = string.match(regex)
+  match_data ? match_data[0] : ""
 end
 
-input_string = ARGV[0]
-
-# Regular expression to match "School"
-matches = input_string.scan(/School/)
-
-# Join the matches into a single string
-result = matches.join
-
-puts result
+if ARGV.length != 1
+  puts "Usage: #{$PROGRAM_NAME} <string>"
+else
+  input_string = ARGV[0]
+  matched = match_school(input_string)
+  puts matched
+end
