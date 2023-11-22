@@ -1,16 +1,18 @@
 #!/usr/bin/env ruby
 
-def valid_phone_number?(string)
-  regex = /\A\d{10}\z/
-  string.match?(regex)
+def extract_phone_number(string)
+  regex = /\d{10}/
+  match_data = string.match(regex)
+  match_data ? match_data[0] : ""
 end
 
 if ARGV.length != 1
   puts "Usage: #{$PROGRAM_NAME} <phone_number>"
 else
   input_number = ARGV[0]
-  if valid_phone_number?(input_number)
-    puts input_number
+  extracted_number = extract_phone_number(input_number)
+  if extracted_number.length == 10
+    puts extracted_number
   else
     puts "Invalid phone number"
   end
