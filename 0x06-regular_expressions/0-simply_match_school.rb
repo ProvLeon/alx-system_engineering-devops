@@ -1,12 +1,16 @@
 #!/usr/bin/env ruby
-puts ARGV[0].scan(/School/).join
 
-# A function that prints a greeting message with the given name.
-#
-# Args:
-#     name (str): The name to include in the greeting message.
-#
-# Returns:
-#     None: This function does not return anything.
-def hello(name):
-  print("hello " + name)
+if ARGV.length != 1
+  puts "Usage: #{$PROGRAM_NAME} <string>"
+  exit 1
+end
+
+input_string = ARGV[0]
+
+# Regular expression to match "School"
+matches = input_string.scan(/School/)
+
+# Join the matches into a single string
+result = matches.join
+
+puts result
