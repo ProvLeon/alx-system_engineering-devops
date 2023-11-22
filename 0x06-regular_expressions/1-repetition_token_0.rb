@@ -1,2 +1,15 @@
 #!/usr/bin/env ruby
-puts ARGV[0].scan(/hbt{2,5}n/).join
+
+def match_hbttn(string)
+  regex = /hbt{2,5}n/
+  match_data = string.match(regex)
+  match_data ? match_data[0] : ""
+end
+
+if ARGV.length != 1
+  puts "Usage: #{$PROGRAM_NAME} <string>"
+else
+  input_string = ARGV[0]
+  matched = match_hbttn(input_string)
+  puts matched
+end
