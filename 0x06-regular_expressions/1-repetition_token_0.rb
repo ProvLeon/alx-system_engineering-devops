@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 def match_hbttn(string)
-  regex = /hbt{2,5}n/
+  regex = /hb(t{2,5})n/
   match_data = string.match(regex)
   match_data ? match_data[0] : ""
 end
