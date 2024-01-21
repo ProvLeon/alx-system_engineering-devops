@@ -1,16 +1,7 @@
-# This file changes the config file for ssh
+# Changes SSH config file
 
-file_line { 'Turn off passwd auth':
-  path  => '/etc/ssh/sshd_config',
-  line  => 'PasswordAuthentication no',
-}
-
-file_line { 'Declare identity file':
-  path  => '/etc/ssh/sshd_config',
-  line  => 'IdentityFile ~/.ssh/school',
-}
-
-service { 'ssh':
-  ensure    => running,
-  subscribe => File_line['Turn off passwd auth', 'Declare identity file'],
+exec { 'echo':
+  path    => '/usr/bin:/bin',
+  command => 'echo "    IdentityFile ~/.ssh/school\n    PasswordAuthentication no" >> /etc/ssh/ssh_config',
+  returns => [0,1],
 }
