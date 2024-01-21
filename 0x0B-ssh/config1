@@ -1,0 +1,8 @@
+# ~/.ssh/config
+# A configuration file for
+
+Host *
+    HostName 54.84.216.34 # This is the server hostname
+    User ubuntu  # This is the server username
+    IdentityFile ~/.ssh/alxkey # This is the sshkey file
+    PasswordAuthentication no # This set the passphrase auth to none

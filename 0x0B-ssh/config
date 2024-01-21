@@ -1,0 +1,10 @@
+# ~/.ssh/config
+# A configuration file for
+
+Host *
+    SendEnv LANG LC_*
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials no
+    IdentityFile ~/.ssh/alxkey
+    PasswordAuthentication no # This set the passphrase auth to none
