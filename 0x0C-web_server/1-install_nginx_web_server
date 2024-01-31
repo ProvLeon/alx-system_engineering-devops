@@ -1,23 +1,15 @@
 #!/usr/bin/env bash
 # Installs Nginx on server and creates a custom html file
 
-# Create a custom HTML file with content "Hello Wold!"
-echo "
-<html>
-  <head>
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-  </body>
-</html>
-" | sudo tee /www/index.html
 
 # Update the package index
 sudo apt-get update
 
 # Install Nginx
 sudo apt-get install -y nginx
+
+# Create a custom HTML file with content "Hello World!"
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
 # Start Nginx
 
