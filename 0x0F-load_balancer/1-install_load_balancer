@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Install software properties common
+#apt-get -y install software-properties-common
+
+# Add HAProxy repository
+#add-apt-repository -y ppa:vbernat/haproxy-2.0
+
+# Update package repositories
+apt-get -y update
+
+# Install HAProxy version 2.0
+apt-get -y install haproxy #=2.0.*
+
+# Add student ID
+STUDENT_ID=190195
+SERVER1_IP='54.84.216.34:80'
+SERVER2_IP='34.204.91.223:80'
+# Configure HAProxy
+cat <<EOF >> /etc/haproxy/haproxy.cfg
+frontend http
+    bind *:80
+    mode http
+    default_backend web-backend
+
+backend web-backend
+    balance roundrobin
+    server ${STUDENT_ID}-web-01 $SERVER1_IP check
+    server ${STUDENT_ID}-web-02 $SERVER2_IP check
+EOF
+
+# Restart HAProxy service
+service haproxy restart
+
