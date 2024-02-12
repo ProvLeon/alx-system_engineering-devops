@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Tis Script install Nginx and set it to listen on port 80
 
 # Check if Nginx is installed
 if ! command -v nginx &> /dev/null
