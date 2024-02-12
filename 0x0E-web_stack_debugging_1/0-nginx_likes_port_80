@@ -17,11 +17,13 @@ else
   sudo systemctl start nginx
 fi
 
-# Check if nginx is listeing on port 80
+# Check if netstat is installed
 if ! command -v netstat &> /dev/null
 then
   sudo apt install net-tools &> /dev/null
+fi
 
+# Check if nginx is listeing on port 80
 if sudo netstat -tuln | grep :80 &> /dev/null
 then
   echo "Nginx is listening on port 80"
