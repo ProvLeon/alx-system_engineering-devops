@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Tis Script install Nginx and set it to listen on port 80
+# This Script install Nginx and set it to listen on port 80
 
 # Check if Nginx is installed
 if ! command -v nginx &> /dev/null
@@ -31,6 +31,9 @@ then
 else
   echo "Nginx is not listening on port 80, configuring..."
   sudo sed -i 's/listen[^;]*/listen 80/' /etc/nginx/sites-available/default
+  sudo sed -i 's/listen[^;]*/listen [::]:80/' /etc/nginx/sites-available/default
+  sudo sed -i 's/ ipv6only=on//' /etc/nginx/sites-available/default
+  sudo sed -i 's/usr/share/nginx/html /var/www/html' /etc/nginx/sites-available/default
   sudo systemctl restart nginx
 fi
 
