@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Import MySQL GPG Key
+wget -qO- https://dev.mysql.com/doc/refman/5.7/en/checking-gpg-signature.html | sudo apt-key add -
+
+# Add MySQL APT Repository
+echo "deb http://repo.mysql.com/apt/ubuntu/ $(lsb_release -sc) mysql-5.7" | sudo tee /etc/apt/sources.list.d/mysql.list
+
+# Update package index
+sudo apt update
+
+# Install MySQL Server 5.7
+sudo apt install -y mysql-server=5.7*
+
+# Secure MySQL Installation
+sudo mysql_secure_installation
+
+# Start MySQL Service
+sudo systemctl start mysql
+
+# Optional: Enable MySQL to start on boot
+sudo systemctl enable mysql
+
+echo "MySQL 5.7 installation and setup completed."
+

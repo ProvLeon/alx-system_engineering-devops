@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Define MySQL credentials and commands
+MYSQL_USER="root"
+MYSQL_PASSWORD="your_mysql_root_password"
+MYSQL_COMMAND="sudo mysql -u$MYSQL_USER -e" # -p$MYSQL_PASSWORD -e"
+
+# Define MySQL user details
+MYSQL_NEW_USER="holberton_user"
+MYSQL_NEW_PASSWORD="projectcorrection280hbtn"
+MYSQL_HOST="localhost"
+
+# Create MySQL user with appropriate permissions
+$MYSQL_COMMAND "use mysql; CREATE USER '$MYSQL_NEW_USER'@'$MYSQL_HOST' IDENTIFIED BY '$MYSQL_NEW_PASSWORD';"
+$MYSQL_COMMAND "GRANT REPLICATION CLIENT ON *.* TO '$MYSQL_NEW_USER'@'$MYSQL_HOST';"
+
+# Verify that the user was created and has the correct permissions
+$MYSQL_COMMAND "SHOW GRANTS FOR '$MYSQL_NEW_USER'@'$MYSQL_HOST';"
