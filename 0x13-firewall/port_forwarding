@@ -1,0 +1,28 @@
+#!/bin/bash
+# This script will enable port forwarding on the server
+
+# Define the configuration to insert
+CONFIG='
+\*nat
+:PREROUTING ACCEPT [0:0]
+-A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
+COMMIT
+'
+
+# Define the file path
+FILE="/etc/ufw/before.rules"
+
+# Check if the file exists
+if [ -f "$FILE" ]; then
+    # Check if the configuration already exists in the file
+    if grep -qF "$CONFIG" "$FILE"; then
+        echo "Configuration already exists in $FILE"
+    else
+        # Insert the configuration into the file
+        sudo sed -i '/^# End required lines$/i '"$CONFIG"'' "$FILE"
+        echo "Configuration inserted successfully into $FILE"
+    fi
+else
+    echo "Error: $FILE does not exist"
+fi
+
