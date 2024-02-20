@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Check if MySQL version is 5.7
+if mysql --version | grep -q "5.7"
+then
+    echo "MySQL 5.7 is already installed."
+    exit 0
+fi
+
+# Check if MySQL program exists
+if ! command -v mysql &> /dev/null
+then
+    echo "MySQL program not found. Proceeding with installation..."
+else
+    # Check if MySQL is running
+    if sudo service mysql status &> /dev/null
+    then
+        echo "MySQL is running. Stopping MySQL..."
+        sudo service mysql stop
+        echo "MySQL stopped."
+
+        # Clean Running MySQL Processes
+        echo "Cleaning Running MySQL Processes..."
+        sudo killall -9 mysqld
+        echo "MySQL Processes cleaned."
+    else
+        echo "MySQL is not running."
+    fi
+
+    # Remove Existing MySQL Versions
+    echo "Removing Existing MySQL Versions..."
+    sudo apt-get remove --purge mysql-server mysql-client mysql-common -y && sudo apt-get autoremove -y
+    echo "Existing MySQL Versions removed."
+fi
+
+# Proceed with MySQL installation
+echo "Installing MySQL..."
+sudo wget -O mysql57 https://raw.githubusercontent.com/nuuxcode/alx-system_engineering-devops/master/scripts/mysql57 && sudo chmod +x mysql57 && sudo ./mysql57
+echo "MySQL installation complete."
+
+# Check MySQL status
+echo "Checking MySQL status..."
+sudo service mysql status
+echo "MySQL status checked."
+
+echo "Script execution completed."
+
