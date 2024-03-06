@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 Function that queries the Reddit API and prints
-the top ten hot posts of a subreddit
+the top ten hot posts of a given subreddit
 """
 import requests
 
@@ -20,10 +20,8 @@ def top_ten(subreddit):
                             allow_redirects=False)
     if response.status_code != 200:
         print(None)
-    else:
-        data = response.json()
-        hot_posts = data.get('data', {}).get('children', [])
-        if not hot_posts:
-            print(None)
-        for post in hot_posts:
-            print(post.get('data', {}).get('title'))
+        return
+    data = response.json()
+    hot_posts = data.get('data', {}).get('children', [])
+    for post in hot_posts:
+        print(post.get('data', {}).get('title'))
