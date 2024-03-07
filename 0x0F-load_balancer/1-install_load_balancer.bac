@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# Check if HAProxy is installed and remove it completely
+if dpkg -l | grep -qw haproxy; then
+    echo "HAProxy is installed, removing..."
+    sudo apt-get remove --purge -y haproxy
+    sudo apt-get autoremove -y
+fi
+
+# Install HAProxy
+sudo apt-get update && sudo apt-get install -y haproxy
+
+# Enable HAProxy to be managed via an init script
+sudo systemctl enable haproxy
+
+# Backup original HAProxy configuration
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
+
+# Student ID and server IPs
+STUDENT_ID=190195
+SERVER1_IP='54.157.134.178:80'
+SERVER2_IP='334.229.161.255:80'
+
+# Configure HAProxy for roundrobin load balancing
+sudo bash -c "cat > /etc/haproxy/haproxy.cfg <<EOF
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    timeout connect 5000ms
+    timeout client  50000ms
+    timeout server  50000ms
+
+frontend http_front
+    bind *:80
+    stats uri /haproxy?stats
+    default_backend http_back
+
+backend http_back
+    balance roundrobin
+    server ${STUDENT_ID}-web-01 $SERVER1_IP check
+    server ${STUDENT_ID}-web-02 $SERVER2_IP check
+EOF"
+
+# Restart HAProxy to apply changes
+sudo systemctl restart haproxy

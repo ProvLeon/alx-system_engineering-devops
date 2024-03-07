@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
-# Check if HAProxy is installed and remove it completely
-if dpkg -l | grep -qw haproxy; then
-    echo "HAProxy is installed, removing..."
-    sudo apt-get remove --purge -y haproxy
-    sudo apt-get autoremove -y
 
-    sudo rm -rf /etc/haproxy/ /var/lib/haproxy /var/log/haproxy
-fi
 # Install software properties common
 #apt-get -y install software-properties-common
 
@@ -26,7 +19,7 @@ sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
 # Add student ID
 STUDENT_ID=190195
 SERVER1_IP='54.157.134.178:80'
-SERVER2_IP='54.175.136.136:80'
+SERVER2_IP='334.229.161.255:80'
 # Configure HAProxy
 echo "
 frontend http
