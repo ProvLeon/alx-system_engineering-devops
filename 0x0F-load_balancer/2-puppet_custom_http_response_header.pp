@@ -1,48 +1,25 @@
-# Define Nginx class
-class { 'nginx':
-  manage_repo    => true,
-  service_ensure => 'running',
-  service_enable => true,
+# Installs a Nginx server with custome HTTP header
+
+exec {'update':
+  provider => shell,
+  command  => 'sudo apt-get -y update',
+  before   => Exec['install Nginx'],
 }
 
-# Create custom 404 page
-file { '/usr/share/nginx/html/custom_404.html':
-  ensure  => file,
-  content => "Ceci n'est pas une page\n",
+exec {'install Nginx':
+  provider => shell,
+  command  => 'sudo apt-get -y install nginx',
+  before   => Exec['add_header'],
 }
 
-# Configure Nginx to use custom 404 page and add custom HTTP response header
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => "
-    server {
-      listen 80 default_server;
-      listen [::]:80 default_server;
-      root /usr/share/nginx/html;
-      index index.html;
-      server_name _;
-
-      location / {
-        try_files \$uri \$uri/ =404;
-        add_header X-Served-By \$hostname;
-      }
-      error_page 404 /custom_404.html;
-      location = /custom_404.html {
-        internal;
-      }
-
-      location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-      }
-    }
-  ",
-  require => Class['nginx'],
+exec { 'add_header':
+  provider    => shell,
+  environment => ["HOST=${hostname}"],
+  command     => 'sudo sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOST\";/" /etc/nginx/nginx.conf',
+  before      => Exec['restart Nginx'],
 }
 
-# Restart Nginx service to apply changes
-service { 'nginx':
-  ensure  => running,
-  enable  => true,
-  require => File['/etc/nginx/sites-available/default'],
+exec { 'restart Nginx':
+  provider => shell,
+  command  => 'sudo service nginx restart',
 }
-
