@@ -1,7 +1,7 @@
 #!/bin/bash
-
+PASS="leon"
 # Check if MySQL version is 5.7
-if mysql --version | grep -q "5.7"
+if mysql --version | grep -q "5.7" &> /dev/null
 then
     echo "MySQL 5.7 is already installed."
     exit 0
@@ -38,10 +38,37 @@ echo "Installing MySQL..."
 sudo wget -O mysql57 https://raw.githubusercontent.com/nuuxcode/alx-system_engineering-devops/master/scripts/mysql57 && sudo chmod +x mysql57 && sudo ./mysql57
 echo "MySQL installation complete."
 
+# Check if MySQL is enabled and running
+if ! sudo systemctl is-enabled mysql &> /dev/null
+then
+    echo "MySQL is not enabled. Enabling..."
+    sudo systemctl enable mysql
+    echo "MySQL enabled."
+fi
+
+if ! sudo systemctl is-active mysql &> /dev/null
+then
+    echo "MySQL is not running. Starting..."
+    sudo systemctl start mysql
+    echo "MySQL started."
+fi
+
 # Check MySQL status
 echo "Checking MySQL status..."
 sudo service mysql status
 echo "MySQL status checked."
+
+if sudo systemctl is-active mysql &> /dev/null
+then
+    echo "MySQL is running and active. Creating user 'holberton_user'..."
+    # Create MySQL user 'holberton_user' with permissions to check replication status
+    sudo mysql -p$PASS -e "CREATE USER 'holberton_user'@'localhost' IDENTIFIED BY 'projectcorrection280hbtn';"
+    sudo mysql -p$PASS -e "GRANT ALL privileges on *.* to 'holberton_user'@'localhost';"
+    sudo mysql -p$PASS -e "GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';"
+    sudo mysql -p$PASS -e "FLUSH PRIVILEGES;"
+    echo "'holberton_user' created and granted permissions."
+fi
+mysql -uholberton_user -pprojectcorrection280hbtn -e "SHOW GRANTS FOR 'holberton_user'@'localhost'"
 
 echo "Script execution completed."
 
